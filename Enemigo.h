@@ -5,13 +5,15 @@
 
  class Enemigo: public ObjetoBase {
  protected:
-	 int resistencia;
+	 int vida;
 	 
  public: 
 	 Enemigo( int x, int y, int r);
 	 
-	 virutal void recibirDani();
-	 bool estaMuerto();
+	 void recibirDanio();
+	 void estaMuerto();
+	 bool estaVivo()const;
+	
  };
  
 #endif

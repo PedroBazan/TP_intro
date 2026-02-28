@@ -23,7 +23,7 @@ public:
 	void actualizar();
 	void dibujar();
 	void procesarIngreso();
-	voiddipararJugador();
+	void dispararJugador();
 	
 	
 };
