@@ -2,12 +2,12 @@
 #define BALA_H
 #include "ObjetoBase.h"
 
-class bala: public ObjetoBase{
+class Bala: public ObjetoBase{
 private:
 	int direccion; 
 	
 public: 
-	bala9int x, int y, int dir);
+	Bala (int x, int y, int dir);
 	void dibujar();
 	void mover();
 };

@@ -4,28 +4,27 @@
 #include "Jugador.h"
 #include "EnemigoBasico.h"
 #include "Bala.h"
+#include "EnemigoFuerte.h"
 
 #define MAX_ENEMIGOS 30
 #define MAX_BALAS 100
 
-class Juego{
+class Juego {
 private:
 	Jugador jugador;
 	
-	EnemigoBasico* enemigos[MAX_ENEMIGOS]; 
+	Enemigo* enemigos[MAX_ENEMIGOS];
 	Bala* balas[MAX_BALAS];
+	
 	int direccionEnemigos;
+	bool enEjecucion;
 	
 public:
-	juego();
-	void iniciar();
-	void loop();
+	Juego();
+	~Juego();
+	
+	void ejecutar();
 	void actualizar();
 	void dibujar();
-	void procesarIngreso();
-	void dispararJugador();
-	
-	
 };
-
 #endif

@@ -5,14 +5,14 @@ using namespace std;
 ObjetoBase::ObjetoBase(int px, int py){
 	x =px;
 	y=py;
-	activo=true;
+	activa=true;
 }
 
 ObjetoBase::~ObjetoBase(){
 	
 }
 bool ObjetoBase::estaActivo()const {
-	return activo;
+	return activa;
 }
 void ObjetoBase::desactivar(){
 	activo=false;

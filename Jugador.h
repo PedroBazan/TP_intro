@@ -1,5 +1,5 @@
 #ifndef JUGADOR_H
-#define jUGADOR_H
+#define JUGADOR_H
 
 #include "ObjetoBase.h"
 
@@ -11,7 +11,7 @@ public:
 	Jugador( int x, int y);
 	
 	void dibujar();
-	void mover (char tecla);
+	void mover();
 	
 	void perderVida();
 	int getVidas();

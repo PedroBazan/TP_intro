@@ -8,11 +8,12 @@
 	 int vida;
 	 
  public: 
-	 Enemigo( int x, int y, int r);
-	 
-	 void recibirDanio();
-	 void estaMuerto();
-	 bool estaVivo()const;
+	 Enemigo(int x, int y, int v) : ObjetoBase(x, y) { vida = v; }
+	 virtual ~Enemigo() {} 
+	 virtual void dibujar() = 0; // Polimorfismo revisar liberacion de memoria
+	 void recibirDanio() { vida--; if(vida <= 0) desactivar(); }
+	 bool estaVivo() const { return vida > 0; }
+	 void mover() override { y++; } // Movimiento hacia abajo
 	
  };
  

@@ -15,7 +15,7 @@ public:
 	
 	int getX();
 	int getY();
-	bool estaActiva();
+	bool estaActivo();
 	void desactivar();
 };
 
