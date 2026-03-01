@@ -1,8 +1,35 @@
-void mostrarPantallaInicio() {
+#include <iostream>
+#include <conio2.h>
+
+using namespace std;
+
+void mostrarPantallaInicio()
+{
+	clrscr();
+	
 	textcolor(WHITE);
-	gotoxy(20,5);  cout << "SPACE INVADERS LITE";
-	gotoxy(20,7);  cout << "A / D : Mover";
-	gotoxy(20,8);  cout << "ESPACIO : Disparar";
-	gotoxy(20,10); cout << "Autor: TU NOMBRE";
-	getch();
+	
+	gotoxy(25,5);
+	cout << "SPACE INVADERS UNL";
+	
+	gotoxy(20,8);
+	cout << "Mover izquierda: A";
+	
+	gotoxy(20,9);
+	cout << "Mover derecha: D";
+	
+	gotoxy(20,10);
+	cout << "Disparar: ESPACIO";
+	
+	gotoxy(20,16);
+	cout << "Presione una tecla para comenzar...";
+	
+	
+	gotoxy(20,11);
+	cout<<"maximo de balas 150";
+	gotoxy(20,12);
+	cout<<"vidas 3";
+	
+	
+	getch();  // Espera a que se toque una tecla
 }

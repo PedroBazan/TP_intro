@@ -3,11 +3,16 @@
 #include "EnemigoBasico.h"
 using namespace std;
 
-EnemigoBasico::EnemigoBasico(int x, int y)
-	: Enemigo(x, y, 1) {}
+EnemigoBasico::EnemigoBasico(int px, int py)
+	: Enemigo(px, py, 1) {}
 
-void EnemigoBasico::dibujar() {
-	gotoxy(x, y);
-	putch('V');
+void EnemigoBasico::mover()
+{
+	// VACIO
 }
 
+void EnemigoBasico::dibujar() {
+	textcolor(WHITE);
+	gotoxy(getX(), getY());
+	putch('V');
+}

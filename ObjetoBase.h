@@ -2,21 +2,24 @@
 #define OBJETOBASE_H
 
 class ObjetoBase {
-protected:
-	int x, y;
+private:
+	int x;
+	int y;
 	bool activa;
 	
 public:
-	ObjetoBase(int _x, int _y);
-	virtual ~ObjetoBase();
+	ObjetoBase(int px, int py);
+	
+	int getX() const;
+	int getY() const;
+	
+	void setPosicion(int px, int py);
+	
+	bool estaActivo() const;
+	void desactivar();
 	
 	virtual void dibujar() = 0;
 	virtual void mover() = 0;
-	
-	int getX();
-	int getY();
-	bool estaActivo();
-	void desactivar();
 };
 
 #endif

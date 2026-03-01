@@ -1,11 +1,8 @@
-#include <iostream>
-#include <conio2.h>
 #include "Enemigo.h"
-using namespace std;
 
-Enemigo::Enemigo(int px, int py, int vidaInicial)
+Enemigo::Enemigo(int px, int py, int v)
 	: ObjetoBase(px, py) {
-	vida = vidaInicial;
+	vida = v;
 }
 
 void Enemigo::recibirDanio() {

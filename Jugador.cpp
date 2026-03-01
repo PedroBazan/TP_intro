@@ -1,33 +1,38 @@
-#include <iostream>
-#include <conio2.h>
 #include "Jugador.h"
-using namespace std;
+#include <conio2.h>
 
-Jugador::Jugador(int px, int py) :ObjetoBase(px, py) {
+Jugador::Jugador(int px, int py)
+	: ObjetoBase(px, py)
+{
 	vidas = 3;
 }
 
-void Jugador::mover() {
-	if (kbhit()) {
-		char tecla = getch();
-		
-		if (tecla == 'a' && x > 1)
-			x--;
-		
-		if (tecla == 'd' && x < 78)
-			x++;
+void Jugador::moverIzquierda() {
+	if (getX() > 1) {
+		setPosicion(getX() - 1, getY());
 	}
 }
 
-void Jugador::dibujar() {
-	gotoxy(x, y);
-	putch('A');
+void Jugador::moverDerecha() {
+	if (getX() < 79) {   
+		setPosicion(getX() + 1, getY());
+	}
+}
+
+void Jugador::perderVida() {
+	vidas--;
 }
 
 int Jugador::getVidas() const {
 	return vidas;
 }
 
-void Jugador::perderVida() {
-	vidas--;
+void Jugador::dibujar() {
+	textcolor(LIGHTGREEN);
+	gotoxy(getX(), getY());
+	putch('A');
+}
+
+void Jugador::mover() {
+	
 }

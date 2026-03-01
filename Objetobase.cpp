@@ -1,26 +1,28 @@
-#include <iostream>
 #include "ObjetoBase.h"
-using namespace std;
 
-ObjetoBase::ObjetoBase(int px, int py){
-	x =px;
-	y=py;
-	activa=true;
+ObjetoBase::ObjetoBase(int px, int py) {
+	x = px;
+	y = py;
+	activa = true;
 }
 
-ObjetoBase::~ObjetoBase(){
-	
-}
-bool ObjetoBase::estaActivo()const {
-	return activa;
-}
-void ObjetoBase::desactivar(){
-	activo=false;
-}
-int ObjetoBase::getX(){
+int ObjetoBase::getX() const {
 	return x;
 }
-int ObjetoBase::getY(){
-	return  y;
+
+int ObjetoBase::getY() const {
+	return y;
 }
 
+void ObjetoBase::setPosicion(int px, int py) {
+	x = px;
+	y = py;
+}
+
+bool ObjetoBase::estaActivo() const {
+	return activa;
+}
+
+void ObjetoBase::desactivar() {
+	activa = false;
+}

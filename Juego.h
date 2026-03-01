@@ -6,8 +6,10 @@
 #include "Bala.h"
 #include "EnemigoFuerte.h"
 
-#define MAX_ENEMIGOS 30
-#define MAX_BALAS 100
+#define FILAS 5
+#define COLUMNAS 11
+#define MAX_ENEMIGOS (FILAS * COLUMNAS)
+#define MAX_BALAS 150
 
 class Juego {
 private:
@@ -17,6 +19,7 @@ private:
 	Bala* balas[MAX_BALAS];
 	
 	int direccionEnemigos;
+	int contadorMovimiento;
 	bool enEjecucion;
 	
 public:
