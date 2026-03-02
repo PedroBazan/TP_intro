@@ -9,7 +9,7 @@
 #define FILAS 5
 #define COLUMNAS 11
 #define MAX_ENEMIGOS (FILAS * COLUMNAS)
-#define MAX_BALAS 150
+#define MAX_BALAS 200
 
 class Juego {
 private:
@@ -20,6 +20,8 @@ private:
 	
 	int direccionEnemigos;
 	int contadorMovimiento;
+	int puntaje;
+	int balasDisponibles;
 	bool enEjecucion;
 	
 public:

@@ -9,7 +9,7 @@ EnemigoFuerte::EnemigoFuerte(int px, int py)
 
 void EnemigoFuerte::mover()
 {
-	// VACIO
+	
 }
 
 void EnemigoFuerte::dibujar() {

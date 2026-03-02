@@ -3,7 +3,10 @@
 #include "Bala.h"
 using namespace std;
 
-
+int Bala::getDireccion()
+{
+	return direccion;
+}
 Bala::Bala(int px, int py, int dir)
 	: ObjetoBase(px, py)
 {
@@ -12,11 +15,10 @@ Bala::Bala(int px, int py, int dir)
 
 void Bala::mover()
 {
-	// Movimiento vertical según dirección
 	setPosicion(getX(), getY() + direccion);
 	
-	// Si sale de pantalla, se desactiva
-	if (getY() < 1)
+	// Si sale bala se borra
+	if (getY() < 1 || getY() > 24)
 	{
 		desactivar();
 	}
@@ -24,7 +26,11 @@ void Bala::mover()
 
 void Bala::dibujar()
 {
-	textcolor(LIGHTBLUE);
+	if (direccion == -1)
+		textcolor(LIGHTCYAN); 
+	else
+		textcolor(LIGHTRED);  
+	
 	gotoxy(getX(), getY());
 	putch('|');
 }

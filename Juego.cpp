@@ -12,6 +12,8 @@ Juego::Juego() : jugador(40, 23)
 	enEjecucion = true;
 	direccionEnemigos = 1;
 	contadorMovimiento = 0;
+	puntaje = 0;
+	balasDisponibles = 200;
 	
 	srand(time(NULL));
 	
@@ -30,30 +32,12 @@ Juego::Juego() : jugador(40, 23)
 	
 	for (int fila = 0; fila < 5; fila++)
 	{
-		bool fuertes[11];
-		
-		for (int i = 0; i < 11; i++)
-			fuertes[i] = false;
-		
-		int cantidadFuertes = 0;
-		
-		while (cantidadFuertes < 3)
-		{
-			int columnaRandom = rand() % 11;
-			
-			if (!fuertes[columnaRandom])
-			{
-				fuertes[columnaRandom] = true;
-				cantidadFuertes++;
-			}
-		}
-		
 		for (int columna = 0; columna < 11; columna++)
 		{
 			int posX = inicioX + columna * separacionX;
 			int posY = inicioY + fila * separacionY;
 			
-			if (fuertes[columna])
+			if (rand() % 4 == 0)
 				enemigos[indice] = new EnemigoFuerte(posX, posY);
 			else
 				enemigos[indice] = new EnemigoBasico(posX, posY);
@@ -74,7 +58,7 @@ Juego::~Juego()
 
 void Juego::actualizar()
 {
-	// MOVERSE
+	// CONTROLES
 	if (kbhit())
 	{
 		char tecla = getch();
@@ -82,10 +66,62 @@ void Juego::actualizar()
 		if (tecla == 'a' || tecla == 'A')
 			jugador.moverIzquierda();
 		
-		if (tecla == 'd'|| tecla == 'D')
+		if (tecla == 'd' || tecla == 'D')
 			jugador.moverDerecha();
 		
 		if (tecla == ' ')
+		{
+			if (balasDisponibles > 0)   
+			{
+				for (int i = 0; i < MAX_BALAS; i++)
+				{
+					if (balas[i] == NULL || !balas[i]->estaActivo())
+					{
+						if (balas[i] != NULL)
+							delete balas[i];
+						
+						balas[i] = new Bala(
+											jugador.getX(),
+											jugador.getY() - 1,
+											-1
+											);
+						
+						balasDisponibles--;
+						if (balasDisponibles <= 0)
+							enEjecucion = false;
+						break;
+					}
+				}
+			}
+		}
+	} 
+	
+	// DISPARO ENEMIGO
+	if (rand() % 20 == 0)
+	{
+		int columnaRandom = rand() % 11;
+		
+		Enemigo* enemigoMasAbajo = NULL;
+		int yMasAbajo = -1;
+		
+		for (int i = 0; i < MAX_ENEMIGOS; i++)
+		{
+			if (enemigos[i] != NULL && enemigos[i]->estaActivo())
+			{
+				int columna = (enemigos[i]->getX() - 10) / 5;
+				
+				if (columna == columnaRandom)
+				{
+					if (enemigos[i]->getY() > yMasAbajo)
+					{
+						yMasAbajo = enemigos[i]->getY();
+						enemigoMasAbajo = enemigos[i];
+					}
+				}
+			}
+		}
+		
+		if (enemigoMasAbajo != NULL)
 		{
 			for (int i = 0; i < MAX_BALAS; i++)
 			{
@@ -95,9 +131,9 @@ void Juego::actualizar()
 						delete balas[i];
 					
 					balas[i] = new Bala(
-										jugador.getX(),
-										jugador.getY() - 1,
-										-1
+										enemigoMasAbajo->getX(),
+										enemigoMasAbajo->getY() + 1,
+										1
 										);
 					break;
 				}
@@ -105,20 +141,19 @@ void Juego::actualizar()
 		}
 	}
 	
-	// VELOCIDAD ENEMIGOS
+	// MOVIMIENTO ENEMIGOS
 	contadorMovimiento++;
 	
-	if (contadorMovimiento % 5 == 0)
+	if (contadorMovimiento % 15 == 0)
 	{
 		int maxX = 0;
-		int minX = 3000;
+		int minX = 500;
 		
 		for (int i = 0; i < MAX_ENEMIGOS; i++)
 		{
 			if (enemigos[i] != NULL && enemigos[i]->estaActivo())
 			{
 				int x = enemigos[i]->getX();
-				
 				if (x > maxX) maxX = x;
 				if (x < minX) minX = x;
 			}
@@ -128,45 +163,43 @@ void Juego::actualizar()
 		
 		if ((direccionEnemigos == 1 && maxX >= 70) ||
 			(direccionEnemigos == -1 && minX <= 5))
-		{
 			tocarBorde = true;
-		}
+		
+		if (tocarBorde)
+		{
+			direccionEnemigos *= -1;
 			
-			if (tocarBorde)
-			{
-				direccionEnemigos *= -1;
-				
-				for (int i = 0; i < MAX_ENEMIGOS; i++)
-				{
-					if (enemigos[i] != NULL && enemigos[i]->estaActivo())
-					{
-						enemigos[i]->setPosicion(
-												 enemigos[i]->getX(),
-												 enemigos[i]->getY() + 2
-												 );
-					}
-				}
-			}
-			else
-			{
-				for (int i = 0; i < MAX_ENEMIGOS; i++)
-				{
-					if (enemigos[i] != NULL && enemigos[i]->estaActivo())
-					{
-						enemigos[i]->setPosicion(
-												 enemigos[i]->getX() + direccionEnemigos,
-												 enemigos[i]->getY()
-												 );
-					}
-				}
-			}
+			for (int i = 0; i < MAX_ENEMIGOS; i++)
+				if (enemigos[i] != NULL && enemigos[i]->estaActivo())
+					enemigos[i]->setPosicion(
+											 enemigos[i]->getX(),
+											 enemigos[i]->getY() + 2
+											 );
+		}
+		else
+		{
+			for (int i = 0; i < MAX_ENEMIGOS; i++)
+				if (enemigos[i] != NULL && enemigos[i]->estaActivo())
+					enemigos[i]->setPosicion(
+											 enemigos[i]->getX() + direccionEnemigos,
+											 enemigos[i]->getY()
+											 );
+		}
 	}
 	
-	// BALAS MOV
+	// MOVER BALAS
 	for (int i = 0; i < MAX_BALAS; i++)
 	{
-		if (balas[i] != NULL && balas[i]->estaActivo())
-			balas[i]->mover();
+		if (balas[i] != NULL)
+		{
+			if (balas[i]->estaActivo())
+				balas[i]->mover();
+			else
+			{
+				delete balas[i];
+				balas[i] = NULL;
+			}
+		}
 	}
 	
 	// COLISIONES
@@ -174,25 +207,56 @@ void Juego::actualizar()
 	{
 		if (balas[i] != NULL && balas[i]->estaActivo())
 		{
-			for (int j = 0; j < MAX_ENEMIGOS; j++)
+			// Bala jugador
+			if (balas[i]->getDireccion() == -1)
 			{
-				if (enemigos[j] != NULL && enemigos[j]->estaActivo())
+				for (int j = 0; j < MAX_ENEMIGOS; j++)
 				{
-					if (balas[i]->getX() == enemigos[j]->getX() &&
-						balas[i]->getY() == enemigos[j]->getY())
+					if (enemigos[j] != NULL && enemigos[j]->estaActivo())
 					{
-						enemigos[j]->recibirDanio();
-						balas[i]->desactivar();
+						if (balas[i]->getX() == enemigos[j]->getX() &&
+							balas[i]->getY() == enemigos[j]->getY())
+						{
+							enemigos[j]->recibirDanio();
+							balas[i]->desactivar();
+							
+							if (!enemigos[j]->estaActivo())
+								puntaje += 10;
+							
+							break;
+						}
+					}
+				}
+			}
+			
+			// Bala enemigo
+			if (balas[i]->getDireccion() == 1)
+			{
+				if (balas[i]->getX() == jugador.getX() &&
+					balas[i]->getY() == jugador.getY())
+				{
+					jugador.perderVida();
+					balas[i]->desactivar();
+					
+					// Parpadeo 
+					for (int k = 0; k < 3; k++)
+					{
+						gotoxy(jugador.getX(), jugador.getY());
+						cout << " ";
+						Sleep(70);
+						
+						jugador.dibujar();
+						Sleep(70);
 					}
 				}
 			}
 		}
 	}
 	
+	
 	if (jugador.getVidas() <= 0)
 		enEjecucion = false;
 	
-	// GAME OVER
 	for (int i = 0; i < MAX_ENEMIGOS; i++)
 	{
 		if (enemigos[i] != NULL && enemigos[i]->estaActivo())
@@ -200,45 +264,34 @@ void Juego::actualizar()
 			if (enemigos[i]->getY() >= jugador.getY())
 			{
 				enEjecucion = false;
+				break;
 			}
 		}
 	}
-	// GANASTE
-	bool quedanEnemigos = false;
-	
-	for (int i = 0; i < MAX_ENEMIGOS; i++)
-	{
-		if (enemigos[i] != NULL && enemigos[i]->estaActivo())
-		{
-			quedanEnemigos = true;
-			break;
-		}
-	}
-	
-	if (!quedanEnemigos)
-	{
-		enEjecucion = false;
-	}
-	
 }
 
 void Juego::dibujar()
 {
 	clrscr();
 	
+	gotoxy(2,1);
+	cout << "Puntaje: " << puntaje;
+	
+	gotoxy(60,1);
+	cout << "Vidas: " << jugador.getVidas();
+	
+	gotoxy(30,1);
+	cout << "Balas: " << balasDisponibles;
+	
 	jugador.dibujar();
 	
 	for (int i = 0; i < MAX_ENEMIGOS; i++)
-	{
 		if (enemigos[i] != NULL && enemigos[i]->estaActivo())
 			enemigos[i]->dibujar();
-	}
 	
 	for (int i = 0; i < MAX_BALAS; i++)
-	{
 		if (balas[i] != NULL && balas[i]->estaActivo())
 			balas[i]->dibujar();
-	}
 }
 
 void Juego::ejecutar()
@@ -249,26 +302,18 @@ void Juego::ejecutar()
 		dibujar();
 		Sleep(50);
 	}
-	clrscr(); // BORRA PANTALLA
-	//INFORMA SI GANASTE O PERDITE
-	bool quedanEnemigos = false;
 	
-	for (int i = 0; i < MAX_ENEMIGOS; i++)
-	{
-		if (enemigos[i] != NULL && enemigos[i]->estaActivo())
-		{
-			quedanEnemigos = true;
-			break;
-		}
-	}
+	clrscr();
 	
-	gotoxy(30, 10);
+	gotoxy(30,10);
 	
-	if (quedanEnemigos)
+	if (jugador.getVidas() <= 0)
 		cout << "GAME OVER";
 	else
 		cout << "GANASTE";
 	
+	gotoxy(30,12);
+	cout << "Puntaje Final: " << puntaje;
+	
 	getch();
 }
-

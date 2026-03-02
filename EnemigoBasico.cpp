@@ -8,7 +8,7 @@ EnemigoBasico::EnemigoBasico(int px, int py)
 
 void EnemigoBasico::mover()
 {
-	// VACIO
+	
 }
 
 void EnemigoBasico::dibujar() {

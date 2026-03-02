@@ -10,7 +10,7 @@ void mostrarPantallaInicio()
 	textcolor(WHITE);
 	
 	gotoxy(25,5);
-	cout << "SPACE INVADERS UNL";
+	cout << "SPACE INVADERS PEDRO BAZAND ";
 	
 	gotoxy(20,8);
 	cout << "Mover izquierda: A";
@@ -26,7 +26,7 @@ void mostrarPantallaInicio()
 	
 	
 	gotoxy(20,11);
-	cout<<"maximo de balas 150";
+	cout<<"maximo de balas 200";
 	gotoxy(20,12);
 	cout<<"vidas 3";
 	

@@ -4,12 +4,14 @@
 
 class Bala: public ObjetoBase{
 private:
-	int direccion; 
+	int direccion;
+	
 	
 public: 
 	Bala (int x, int y, int dir);
 	void dibujar();
 	void mover();
+	int getDireccion();
 };
 
 #endif
